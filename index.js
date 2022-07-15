@@ -47,7 +47,6 @@ async function run() {
       const updateTask = req.body;
       const filter = { _id: ObjectId(id) };
       const options = { upsert: true };
-      console.log(updateTask);
       const updateDoc = {
         $set: {
           text: updateTask.newText,
@@ -71,6 +70,13 @@ async function run() {
     app.get("/compleat", async (req, res) => {
       const filter = { status: "compleat" };
       const result = await taskCollection.find(filter).toArray();
+      res.send(result);
+    });
+    // DELETE TASK
+    app.delete("/delete/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: ObjectId(id) };
+      const result = await taskCollection.deleteOne(filter);
       res.send(result);
     });
   } finally {
